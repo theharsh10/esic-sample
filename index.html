@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESIC Pune Healthcare Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-section">
+                    <h1>ESIC Pune Healthcare Dashboard</h1>
+                    <p>Digital Command Center - 21 Dispensaries + 1 Hospital</p>
+                </div>
+                <div class="header-controls">
+                    <button class="theme-toggle" id="themeToggle">🌙</button>
+                    <div class="time-selector">
+                        <select id="monthSelector" class="form-control">
+                            <option value="april">April 2025</option>
+                            <option value="may">May 2025</option>
+                            <option value="june">June 2025</option>
+                            <option value="july">July 2025</option>
+                            <option value="august" selected>August 2025</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="tab-navigation">
+        <div class="container">
+            <ul class="nav-tabs">
+                <li><button class="tab-btn active" data-tab="overview">Overview</button></li>
+                <li><button class="tab-btn" data-tab="analysis">Analysis</button></li>
+                <li><button class="tab-btn" data-tab="directory">Facility Directory</button></li>
+                <li><button class="tab-btn" data-tab="map">Interactive Map</button></li>
+                <li><button class="tab-btn" data-tab="monitor">Performance Monitor</button></li>
+                <li><button class="tab-btn" data-tab="alerts">Alerts & Notifications</button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+        <!-- Overview Tab -->
+        <section id="overview-tab" class="tab-content active">
+            <div class="container">
+                <!-- Network Summary Cards -->
+                <div class="hero-section">
+                    <div class="summary-grid">
+                        <div class="summary-card primary">
+                            <h3>Total Facilities</h3>
+                            <div class="stat-value">22</div>
+                            <p>21 Dispensaries + 1 Hospital</p>
+                        </div>
+                        <div class="summary-card success">
+                            <h3>Total Patients</h3>
+                            <div class="stat-value">36,444</div>
+                            <p>Network Coverage</p>
+                        </div>
+                        <div class="summary-card info">
+                            <h3>Prescriptions</h3>
+                            <div class="stat-value">20,091</div>
+                            <p>Current Month</p>
+                        </div>
+                        <div class="summary-card warning">
+                            <h3>Referrals</h3>
+                            <div class="stat-value">3,128</div>
+                            <p>Inter-facility</p>
+                        </div>
+                        <div class="summary-card error">
+                            <h3>Certificates</h3>
+                            <div class="stat-value">2,300</div>
+                            <p>Issued This Month</p>
+                        </div>
+                        <div class="summary-card secondary">
+                            <h3>Medical Interventions</h3>
+                            <div class="stat-value">1,474</div>
+                            <p>Procedures Completed</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="charts-section">
+                    <div class="section-header">
+                        <h2>Performance Trends</h2>
+                        <div class="chart-controls">
+                            <select id="chartPeriod" class="form-control">
+                                <option value="5months">Last 5 Months</option>
+                                <option value="quarter">Current Quarter</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="chart-grid">
+                        <div class="chart-card">
+                            <h3>Network Performance Trends</h3>
+                            <div class="chart-container" style="position: relative; height: 300px;">
+                                <canvas id="trendsChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-card">
+                            <h3>Top Performing Dispensaries</h3>
+                            <div class="chart-container" style="position: relative; height: 300px;">
+                                <canvas id="dispensaryChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Module Navigation -->
+                <div class="modules-section">
+                    <h2>Module Quick Access</h2>
+                    <div class="modules-grid">
+                        <button class="module-btn" data-module="registration">📝 Registration</button>
+                        <button class="module-btn" data-module="clinical">🩺 Clinical</button>
+                        <button class="module-btn" data-module="claims">💰 Claims</button>
+                        <button class="module-btn" data-module="referrals">🔄 Referrals</button>
+                        <button class="module-btn" data-module="camps">🏕️ Camps</button>
+                        <button class="module-btn" data-module="certificates">📄 Certificates</button>
+                        <button class="module-btn" data-module="pharmacy">💊 Pharmacy</button>
+                    </div>
+                </div>
+
+                <!-- Quick Alerts -->
+                <div class="quick-alerts">
+                    <h3>Active Alerts</h3>
+                    <div class="alert-item critical">
+                        <span class="alert-badge">!</span>
+                        <span>Bhosari dispensary showing declining footfall</span>
+                    </div>
+                    <div class="alert-item warning">
+                        <span class="alert-badge">⚠</span>
+                        <span>Medical supplies running low at 3 facilities</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analysis Tab -->
+        <section id="analysis-tab" class="tab-content">
+            <div class="container">
+                <div class="analysis-header">
+                    <h2>Comparative Analysis</h2>
+                    <div class="analysis-controls">
+                        <select id="facilitySelector" class="form-control">
+                            <option value="all">All Facilities</option>
+                            <option value="dispensaries">Dispensaries Only</option>
+                            <option value="hospital">Hospital Only</option>
+                        </select>
+                        <select id="periodSelector" class="form-control">
+                            <option value="monthly">Monthly View</option>
+                            <option value="weekly">Weekly View</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="analysis-grid">
+                    <div class="performance-table">
+                        <h3>Top Performers</h3>
+                        <table class="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Facility</th>
+                                    <th>Footfall</th>
+                                    <th>Prescriptions</th>
+                                    <th>Score</th>
+                                </tr>
+                            </thead>
+                            <tbody id="performanceTableBody">
+                                <tr>
+                                    <td>Chinchwad</td>
+                                    <td>4,177</td>
+                                    <td>1,690</td>
+                                    <td><span class="score-badge high">98</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Sanaswadi</td>
+                                    <td>2,790</td>
+                                    <td>1,789</td>
+                                    <td><span class="score-badge high">95</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Chakan</td>
+                                    <td>2,439</td>
+                                    <td>1,652</td>
+                                    <td><span class="score-badge high">94</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="trend-comparison">
+                        <h3>5-Month Trend Analysis</h3>
+                        <div class="chart-container" style="position: relative; height: 250px;">
+                            <canvas id="trendComparisonChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="growth-metrics">
+                    <div class="metric-card">
+                        <h4>Patient Growth Rate</h4>
+                        <div class="growth-value positive">+12.3%</div>
+                        <p>Month-over-month</p>
+                    </div>
+                    <div class="metric-card">
+                        <h4>Prescription Rate</h4>
+                        <div class="growth-value negative">-2.5%</div>
+                        <p>From peak in July</p>
+                    </div>
+                    <div class="metric-card">
+                        <h4>Referral Efficiency</h4>
+                        <div class="growth-value positive">+8.7%</div>
+                        <p>Network optimization</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Facility Directory Tab -->
+        <section id="directory-tab" class="tab-content">
+            <div class="container">
+                <div class="directory-header">
+                    <h2>Facility & Personnel Directory</h2>
+                    <div class="search-filters">
+                        <input type="text" id="facilitySearch" class="form-control" placeholder="Search facilities...">
+                        <select id="typeFilter" class="form-control">
+                            <option value="all">All Types</option>
+                            <option value="dispensary">Dispensaries</option>
+                            <option value="hospital">Hospital</option>
+                        </select>
+                        <select id="blockFilter" class="form-control">
+                            <option value="all">All Blocks</option>
+                            <option value="pune-urban">Pune Urban</option>
+                            <option value="pune-rural">Pune Rural</option>
+                            <option value="pune-central">Pune Central</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="facilities-grid">
+                    <div class="facility-card">
+                        <div class="facility-header">
+                            <h3>Dhanwantari Hospital</h3>
+                            <span class="status-badge active">Active</span>
+                        </div>
+                        <div class="facility-details">
+                            <p><strong>Type:</strong> Hospital</p>
+                            <p><strong>Block:</strong> Pune Central</p>
+                            <p><strong>Staff:</strong> 45 personnel</p>
+                            <p><strong>Performance Score:</strong> <span class="score high">98</span></p>
+                        </div>
+                        <div class="facility-actions">
+                            <button class="btn btn--sm btn--outline">View Details</button>
+                            <button class="btn btn--sm btn--primary">Contact</button>
+                        </div>
+                    </div>
+                    
+                    <div class="facility-card">
+                        <div class="facility-header">
+                            <h3>Baramati Dispensary</h3>
+                            <span class="status-badge active">Active</span>
+                        </div>
+                        <div class="facility-details">
+                            <p><strong>Type:</strong> Dispensary</p>
+                            <p><strong>Block:</strong> Pune Rural</p>
+                            <p><strong>Staff:</strong> 10 personnel</p>
+                            <p><strong>Performance Score:</strong> <span class="score high">90</span></p>
+                        </div>
+                        <div class="facility-actions">
+                            <button class="btn btn--sm btn--outline">View Details</button>
+                            <button class="btn btn--sm btn--primary">Contact</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hospital Departments -->
+                <div class="departments-section">
+                    <h3>Hospital Department Utilization</h3>
+                    <div class="chart-container" style="position: relative; height: 300px;">
+                        <canvas id="departmentChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Map Tab -->
+        <section id="map-tab" class="tab-content">
+            <div class="container">
+                <div class="map-header">
+                    <h2>Geographic Intelligence</h2>
+                    <div class="map-controls">
+                        <div class="data-layers">
+                            <label><input type="checkbox" checked> Activity Rate</label>
+                            <label><input type="checkbox" checked> New Registrations</label>
+                            <label><input type="checkbox"> Patient Check-ins</label>
+                        </div>
+                        <div class="zoom-controls">
+                            <button class="btn btn--sm" id="zoomIn">+</button>
+                            <button class="btn btn--sm" id="zoomOut">-</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="map-container">
+                    <div class="pune-map">
+                        <h3>Pune District - ESIC Network Coverage</h3>
+                        <div class="map-legend">
+                            <div class="legend-item">
+                                <span class="legend-color high"></span>
+                                <span>High Performance</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color medium"></span>
+                                <span>Medium Performance</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color low"></span>
+                                <span>Needs Attention</span>
+                            </div>
+                        </div>
+                        
+                        <div class="facility-markers">
+                            <div class="marker high" data-facility="chinchwad" style="top: 20%; left: 30%;">
+                                <span class="marker-dot"></span>
+                                <span class="marker-label">Chinchwad</span>
+                            </div>
+                            <div class="marker high" data-facility="baramati" style="top: 60%; left: 70%;">
+                                <span class="marker-dot"></span>
+                                <span class="marker-label">Baramati</span>
+                            </div>
+                            <div class="marker medium" data-facility="chakan" style="top: 15%; left: 45%;">
+                                <span class="marker-dot"></span>
+                                <span class="marker-label">Chakan</span>
+                            </div>
+                            <div class="marker low" data-facility="bhosari" style="top: 25%; left: 35%;">
+                                <span class="marker-dot"></span>
+                                <span class="marker-label">Bhosari</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="facility-info-panel" id="facilityInfo">
+                        <h4>Select a facility to view details</h4>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Performance Monitor Tab -->
+        <section id="monitor-tab" class="tab-content">
+            <div class="container">
+                <div class="monitor-header">
+                    <h2>Real-Time Performance Monitor</h2>
+                    <div class="refresh-indicator">
+                        <span class="refresh-dot"></span>
+                        <span>Auto-refresh enabled</span>
+                    </div>
+                </div>
+
+                <div class="kpi-dashboard">
+                    <div class="kpi-card">
+                        <h3>Daily Footfall Target</h3>
+                        <div class="kpi-value">28,775 / 30,000</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 95.9%"></div>
+                        </div>
+                        <p>95.9% Achievement</p>
+                    </div>
+                    
+                    <div class="kpi-card">
+                        <h3>Prescription Rate</h3>
+                        <div class="kpi-value">17,749 / 20,000</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 88.7%"></div>
+                        </div>
+                        <p>88.7% Achievement</p>
+                    </div>
+
+                    <div class="kpi-card">
+                        <h3>Referral Efficiency</h3>
+                        <div class="kpi-value">3,128 / 3,500</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 89.4%"></div>
+                        </div>
+                        <p>89.4% Achievement</p>
+                    </div>
+                </div>
+
+                <div class="ranking-tables">
+                    <div class="ranking-table">
+                        <h3>Facility Performance Ranking</h3>
+                        <div class="rank-list">
+                            <div class="rank-item">
+                                <span class="rank">1</span>
+                                <span class="facility">Chinchwad</span>
+                                <span class="score">98</span>
+                            </div>
+                            <div class="rank-item">
+                                <span class="rank">2</span>
+                                <span class="facility">Sanaswadi</span>
+                                <span class="score">95</span>
+                            </div>
+                            <div class="rank-item">
+                                <span class="rank">3</span>
+                                <span class="facility">Chakan</span>
+                                <span class="score">94</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="heatmap-section">
+                        <h3>Patient Flow Heatmap</h3>
+                        <div class="heatmap-grid">
+                            <div class="heatmap-cell high">Urban West</div>
+                            <div class="heatmap-cell medium">Urban East</div>
+                            <div class="heatmap-cell high">Rural North</div>
+                            <div class="heatmap-cell low">Rural South</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Alerts & Notifications Tab -->
+        <section id="alerts-tab" class="tab-content">
+            <div class="container">
+                <div class="alerts-header">
+                    <h2>Alerts & Notifications</h2>
+                    <div class="alert-summary">
+                        <span class="alert-count critical">3</span>
+                        <span class="alert-count warning">5</span>
+                        <span class="alert-count info">2</span>
+                    </div>
+                </div>
+
+                <div class="alerts-grid">
+                    <div class="alerts-panel critical">
+                        <h3>🚨 Critical Alerts</h3>
+                        <div class="alert-item">
+                            <div class="alert-header">
+                                <span class="alert-title">Declining Patient Footfall</span>
+                                <span class="alert-time">2 hours ago</span>
+                            </div>
+                            <p>Bhosari dispensary showing 23.5% decline in patient visits</p>
+                            <div class="alert-actions">
+                                <button class="btn btn--sm btn--primary">Investigate</button>
+                                <button class="btn btn--sm btn--outline">Assign Task</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="alerts-panel warning">
+                        <h3>⚠️ Resource Warnings</h3>
+                        <div class="alert-item">
+                            <div class="alert-header">
+                                <span class="alert-title">Medical Supply Shortage</span>
+                                <span class="alert-time">4 hours ago</span>
+                            </div>
+                            <p>3 facilities reporting low medicine inventory levels</p>
+                            <div class="alert-actions">
+                                <button class="btn btn--sm btn--primary">View Report</button>
+                                <button class="btn btn--sm btn--outline">Schedule Resupply</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="alerts-panel info">
+                        <h3>ℹ️ Training Requirements</h3>
+                        <div class="alert-item">
+                            <div class="alert-header">
+                                <span class="alert-title">Staff Training Scheduled</span>
+                                <span class="alert-time">1 day ago</span>
+                            </div>
+                            <p>Digital portal training for coordinators next week</p>
+                            <div class="alert-actions">
+                                <button class="btn btn--sm btn--primary">View Schedule</button>
+                                <button class="btn btn--sm btn--outline">Send Reminder</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recommendations-section">
+                    <h3>Actionable Recommendations</h3>
+                    <div class="recommendation-list">
+                        <div class="recommendation-item">
+                            <h4>Improve Bhosari Performance</h4>
+                            <p>Deploy additional medical staff and conduct facility audit</p>
+                            <button class="btn btn--sm btn--primary">Create Action Plan</button>
+                        </div>
+                        <div class="recommendation-item">
+                            <h4>Optimize Rural Coverage</h4>
+                            <p>Increase mobile health camp frequency in underserved areas</p>
+                            <button class="btn btn--sm btn--primary">Schedule Camps</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal for Facility Details -->
+    <div id="facilityModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Facility Details</h3>
+                <button class="modal-close" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Dynamic content -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="dashboard-footer">
+        <div class="container">
+            <p>Copyright © DigiFacility Team – DPH_CoE</p>
+            <div class="export-actions">
+                <button class="btn btn--sm btn--outline">Export CSV</button>
+                <button class="btn btn--sm btn--outline">Export PDF</button>
+                <a href="https://ppl-ai-code-interpreter-files.s3.amazonaws.com/web/direct-files/12f074006e0ad0ee3d7253ae3ae7256b/a8630d6f-aae0-4ba4-8987-f0c8fc93d6e2/97811807.xlsx" target="_blank" class="btn btn--sm btn--primary">Download Master Template</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
